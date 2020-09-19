@@ -103,6 +103,7 @@ namespace eShopSolution.Application.System.Users
                 .Take(request.PageSize)
                 .Select(x => new UserVm()
                 {
+                   Id = x.Id,
                    FirstName = x.FirstName,
                    LastName = x.LastName,
                    PhoneNumber = x.PhoneNumber,
