@@ -8,6 +8,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +46,8 @@ namespace eShopSolution.AdminApp
                 //options.Cookie.HttpOnly = true;
                 //options.Cookie.IsEssential = true;
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();// ca ung dung chi dung duy nhat 1 Singleton
 
             services.AddTransient<IUserApiClient, UserApiClient>();
 

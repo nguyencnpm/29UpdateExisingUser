@@ -41,8 +41,8 @@ namespace eShopSolution.AdminApp.Controllers
             {
                 return View(ModelState);
             }
-            var token = await _userApiClient.Authenticate(request);
-            var userPrincipal = this.ValidateToken(token);
+            var result = await _userApiClient.Authenticate(request);
+            var userPrincipal = this.ValidateToken(result.ResultObj);
             var authProperties = new AuthenticationProperties
             {
                 //AllowRefresh = <bool>
@@ -67,7 +67,7 @@ namespace eShopSolution.AdminApp.Controllers
                 // redirect response value.
             };
 
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("Token", result.ResultObj);
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 // new ClaimsPrincipal(claimsIdentity),

@@ -30,12 +30,12 @@ namespace eShopSolution.BackendApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var resultToken = await _userServic.Authenticate(request);
-            if (string.IsNullOrEmpty(resultToken))
+            var result = await _userServic.Authenticate(request);
+            if (string.IsNullOrEmpty(result.ResultObj))
             {
-                return BadRequest("Username or Password is incorrect.");
+                return BadRequest(result);
             }
-            return Ok(resultToken); //new { token = resultToken } 
+            return Ok(result); //new { token = resultToken } 
         }
 
         [HttpPost]
@@ -47,13 +47,27 @@ namespace eShopSolution.BackendApi.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _userServic.Register(request);
-            if (!result)
+            if (!result.IsSuccessed)
             {
-                return BadRequest("Register is unsuccessfull.");
+                return BadRequest(result);
             }
-            return Ok();
+            return Ok(result);
         }
-
+        // Put: http://localhost/api/users/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)// FromForm
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _userServic.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
 
         // http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
         [HttpGet("paging")]
@@ -61,6 +75,14 @@ namespace eShopSolution.BackendApi.Controllers
         {
             var users = await _userServic.GetUsersPaging(request);
             return Ok(users);
+        }
+
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByID(Guid id)
+        {
+            var user = await _userServic.GetById(id);
+            return Ok(user);
         }
     }
 }
