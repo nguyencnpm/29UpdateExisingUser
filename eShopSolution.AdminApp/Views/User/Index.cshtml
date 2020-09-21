@@ -14,8 +14,25 @@
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <i class="fas fa-table mr-1"></i>
-            <a class="btn btn-primary" asp-action="Create">Create New</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="fas fa-table mr-1"></i>
+                    <a class="btn btn-primary" asp-action="Create">Create New</a>
+                </div>
+                <div class="col-md-6">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" name="keyword" value="@ViewBag.keyWord" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/user/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
