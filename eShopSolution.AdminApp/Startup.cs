@@ -50,7 +50,7 @@ namespace eShopSolution.AdminApp
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();// ca ung dung chi dung duy nhat 1 Singleton
 
             services.AddTransient<IUserApiClient, UserApiClient>();
-
+            services.AddTransient<IRoleApiClient, RoleApiClient>();
             // Enable runtime compilation for a Razor Class Library
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

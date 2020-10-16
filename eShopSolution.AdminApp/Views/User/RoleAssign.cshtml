@@ -1,0 +1,39 @@
+﻿@model eShopSolution.ViewModels.System.Users.RoleAssignRequest
+
+@{
+    ViewData["Title"] = "RoleAssign";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Role Assign</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">Role Assign</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <a class="btn btn-success" asp-action="Index">Back to List</a>
+        </div>
+        <div class="card-body">
+            <form asp-action="RoleAssign">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                @for (var i = 0; i < Model.Roles.Count; i++)
+                {
+                    <div class="form-group">
+                        <label asp-for="Roles[i].Name" class="control-label" for="@Model.Roles[i].Id">@Model.Roles[i].Name</label>
+                        <input type="checkbox" asp-for="Roles[i].Selected" class="form-control" id="@Model.Roles[i].Id" />
+                        <input type="hidden" asp-for="Roles[i].Id" />
+                        <input type="hidden" asp-for="Roles[i].Name" />
+                    </div>
+                }
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
