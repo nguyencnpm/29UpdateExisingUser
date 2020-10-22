@@ -42,7 +42,7 @@ namespace eShopSolution.AdminApp
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidation>());
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(30000);
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
                 //options.Cookie.HttpOnly = true;
                 //options.Cookie.IsEssential = true;
             });
@@ -51,6 +51,8 @@ namespace eShopSolution.AdminApp
 
             services.AddTransient<IUserApiClient, UserApiClient>();
             services.AddTransient<IRoleApiClient, RoleApiClient>();
+            services.AddTransient<ILanguageApiClient, LanguageApiClient>();
+
             // Enable runtime compilation for a Razor Class Library
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

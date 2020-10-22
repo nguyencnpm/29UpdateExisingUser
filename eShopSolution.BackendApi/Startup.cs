@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Application.common;
+using eShopSolution.Application.System.Languages;
 using eShopSolution.Application.System.Roles;
 using eShopSolution.Application.System.Users;
 using eShopSolution.Data.EF;
@@ -56,6 +57,7 @@ namespace eShopSolution.BackendApi
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ILanguageService, LanguageService>();
 
             // Register a default interceptor, where MyDefaultInterceptor is a class that
             // implements IValidatorInterceptor.
