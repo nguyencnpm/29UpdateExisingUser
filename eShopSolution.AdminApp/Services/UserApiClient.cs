@@ -87,7 +87,7 @@ namespace eShopSolution.AdminApp.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
             var response = await client.GetAsync($"/api/users/paging?pageIndex={request.PageIndex}" +
-                $"&pageSize={request.PageSize}&pageSize={request.PageSize}&keyWord={request.KeyWord}");
+                $"&pageSize={request.PageSize}&pageSize={request.PageSize}&Keyword={request.Keyword}");
             var body = await response.Content.ReadAsStringAsync();
             var users = JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserVm>>>(body);
 

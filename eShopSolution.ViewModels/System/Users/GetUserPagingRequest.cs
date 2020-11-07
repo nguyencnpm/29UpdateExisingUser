@@ -7,6 +7,6 @@ namespace eShopSolution.ViewModels.System.Users
 {
     public class GetUserPagingRequest: PagingRequestBase
     {
-        public string KeyWord { get; set; }
+        public string Keyword { get; set; }
     }
 }

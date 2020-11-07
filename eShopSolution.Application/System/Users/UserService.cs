@@ -109,10 +109,10 @@ namespace eShopSolution.Application.System.Users
         public async Task<ApiResult<PagedResult<UserVm>>> GetUsersPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
-            if (!string.IsNullOrEmpty(request.KeyWord))
+            if (!string.IsNullOrEmpty(request.Keyword))
             {
-                query = query.Where(x=>x.UserName.Contains(request.KeyWord)
-                    || x.PhoneNumber.Contains(request.KeyWord)
+                query = query.Where(x=>x.UserName.Contains(request.Keyword)
+                    || x.PhoneNumber.Contains(request.Keyword)
                 );
             }
             //3. Paging

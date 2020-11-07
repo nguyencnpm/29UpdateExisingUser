@@ -24,18 +24,18 @@ namespace eShopSolution.AdminApp.Controllers
             _roleApiClient = roleApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyWord, int pageIndex=1, int pageSize = 10)
+        public async Task<IActionResult> Index(string Keyword, int pageIndex=1, int pageSize = 10)
         {
             var request = new GetUserPagingRequest()
             {
-                KeyWord = keyWord,
+                Keyword = Keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
 
             var data = await _userApiClient.GetUsersPagings(request);
 
-            ViewBag.KeyWord = keyWord;
+            ViewBag.Keyword = Keyword;
 
             if (TempData["result"] != null)
             {
