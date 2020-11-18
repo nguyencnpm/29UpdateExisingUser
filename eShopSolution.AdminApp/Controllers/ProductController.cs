@@ -7,6 +7,7 @@ using eShopSolution.Utilities.Constants;
 using eShopSolution.ViewModels.Catalog.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 
 namespace eShopSolution.AdminApp.Controllers
@@ -14,28 +15,37 @@ namespace eShopSolution.AdminApp.Controllers
     public class ProductController : Controller
     {
         private readonly IProductApiClient _productApiClient;
+        private readonly ICategoryApiClient _categoryApiClient;
         private readonly IConfiguration _configuration;
 
-        public ProductController(IProductApiClient productApiClient, IConfiguration configuration)
+        public ProductController(IProductApiClient productApiClient, ICategoryApiClient categoryApiClient, IConfiguration configuration)
         {
             _productApiClient = productApiClient;
+            _categoryApiClient = categoryApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string Keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 10)
         {
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
             var request = new GetManageProductPagingRequest()
             {
-                Keyword = Keyword,
+                Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                LanguageId = languageId
+                LanguageId = languageId,
+                CategoryId = categoryId
             };
 
             var data = await _productApiClient.GetPagings(request);
 
-            ViewBag.Keyword = Keyword;
+            ViewBag.Keyword = keyword;
 
+            var categories = await _categoryApiClient.GetAll(languageId);
+            ViewBag.categories = categories.Select(x=> new SelectListItem() { 
+                Text = x.Name,
+                Value = x.Id.ToString(),
+                Selected = categoryId.HasValue && categoryId.Value == x.Id
+            });
             if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["result"];

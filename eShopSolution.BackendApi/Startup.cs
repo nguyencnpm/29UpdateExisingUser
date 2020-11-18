@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using eShopSolution.Application.Catalog.Categories;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Application.common;
 using eShopSolution.Application.System.Languages;
@@ -50,6 +51,7 @@ namespace eShopSolution.BackendApi
             // Declare DI
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();

@@ -47,5 +47,27 @@ namespace eShopSolution.AdminApp.Services
             // return JsonConvert.DeserializeObject<ApiErrorResult<List<LanguageVm>>>(body);
             return JsonConvert.DeserializeObject<TResponse>(body);
         }
+
+        protected async Task<List<T>> GetListAsync<T>(string url)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var bearerToken = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+
+            var response = await client.GetAsync(url);
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                // List<LanguageVm> myDeserializeObject = (List<LanguageVm>)JsonConvert.DeserializeObject(body, typeof(List<LanguageVm>));
+                // return new ApiSuccessResult<List<LanguageVm>>(myDeserializeObject);
+                var data = (List<T>)JsonConvert.DeserializeObject(body, typeof(List<T>));
+                return data;
+            }
+            // return JsonConvert.DeserializeObject<ApiErrorResult<List<LanguageVm>>>(body);
+            throw new Exception(body);
+        }
     }
 }

@@ -54,7 +54,7 @@ namespace eShopSolution.AdminApp
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
 
             services.AddTransient<IProductApiClient, ProductApiClient>();
-
+            services.AddTransient<ICategoryApiClient, CategoryApiClient>();
             // Enable runtime compilation for a Razor Class Library
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
