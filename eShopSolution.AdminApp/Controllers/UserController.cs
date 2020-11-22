@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using eShopSolution.AdminApp.Services;
+using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
