@@ -9,3 +9,6 @@
 ## YouTube tutorial
 ## How to configure and run
 ## How to contribute
+
+## Admin template: 
+## Portal template: https://www.free-css.com/free-css-templates/page194/bootstrap-shop
