@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eShopSolution.AdminApp.Services
+namespace eShopSolution.ApiIntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {
@@ -20,7 +21,7 @@ namespace eShopSolution.AdminApp.Services
         private readonly IConfiguration _configuration;
         public ProductApiClient(IHttpClientFactory httpClientFactory
             , IHttpContextAccessor httpContextAccessor
-            , IConfiguration configuration) :base(httpClientFactory, httpContextAccessor, configuration)
+            , IConfiguration configuration) : base(httpClientFactory, httpContextAccessor, configuration)
         {
             _httpClientFactory = httpClientFactory;
             _httpContextAccessor = httpContextAccessor;
@@ -89,9 +90,15 @@ namespace eShopSolution.AdminApp.Services
             return data;
         }
 
+        public async Task<List<ProductVm>> GetFeaturedProducts(string languageId, int take)
+        {
+            var data = await GetListAsync<ProductVm>($"/api/products/featured/{languageId}/{take}");
+            return data;
+        }
+
         public async Task<PagedResult<ProductVm>> GetPagings(GetManageProductPagingRequest request)
         {
-            var data = await base.GetAsync<PagedResult<ProductVm>>(
+            var data = await GetAsync<PagedResult<ProductVm>>(
                 $"/api/products/paging?pageIndex={request.PageIndex}" +
                 $"&pageSize={request.PageSize}&pageSize={request.PageSize}" +
                 $"&keyword={request.Keyword}&languageId={request.LanguageId}" +

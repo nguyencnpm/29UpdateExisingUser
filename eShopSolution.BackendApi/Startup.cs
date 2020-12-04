@@ -9,6 +9,7 @@ using eShopSolution.Application.common;
 using eShopSolution.Application.System.Languages;
 using eShopSolution.Application.System.Roles;
 using eShopSolution.Application.System.Users;
+using eShopSolution.Application.Utilities.Slides;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Constants;
@@ -60,6 +61,10 @@ namespace eShopSolution.BackendApi
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ILanguageService, LanguageService>();
+
+            // --- Website ---
+            services.AddTransient<ISlideService, SlideService>();
+            // --- /.Website ---
 
             // Register a default interceptor, where MyDefaultInterceptor is a class that
             // implements IValidatorInterceptor.

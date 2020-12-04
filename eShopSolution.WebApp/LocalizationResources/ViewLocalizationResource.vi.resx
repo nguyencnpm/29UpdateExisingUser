@@ -138,4 +138,7 @@
   <data name="Vietnamese" xml:space="preserve">
     <value>Tiếng Việt</value>
   </data>
+  <data name="VIEW" xml:space="preserve">
+    <value>Xem</value>
+  </data>
 </root>

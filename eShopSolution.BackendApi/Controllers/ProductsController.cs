@@ -51,6 +51,18 @@ namespace eShopSolution.BackendApi.Controllers
             return Ok(product);
         }
 
+        [HttpGet("featured/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeaturedProducts(int take, string languageId)
+        {
+            var product = await _productService.GetFeaturedProducts(languageId, take);
+            if (product == null)
+            {
+                return BadRequest("Cannot find product");
+            }
+
+            return Ok(product);
+        }
 
         [HttpPost]
         [Consumes("multipart/form-data")]

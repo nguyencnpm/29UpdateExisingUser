@@ -9,6 +9,9 @@ using eShopSolution.WebApp.Models;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using LazZiya.ExpressLocalization;
+using eShopSolution.ApiIntegration;
+using System.Globalization;
+using eShopSolution.Utilities.Constants;
 
 namespace eShopSolution.WebApp.Controllers
 {
@@ -18,21 +21,36 @@ namespace eShopSolution.WebApp.Controllers
         // To localize backend strings inject SahredCultureLocalizer
         private readonly ISharedCultureLocalizer _loc;
 
-        public HomeController(ILogger<HomeController> logger, ISharedCultureLocalizer loc)
+        private readonly ISlideApiClient _slideApiClient;
+        private readonly IProductApiClient _productApiClient;
+        public HomeController(ILogger<HomeController> logger, ISharedCultureLocalizer loc, ISlideApiClient slideApiClient, IProductApiClient productApiClient)
         {
             _logger = logger;
             _loc = loc;
+            _slideApiClient = slideApiClient;
+            _productApiClient = productApiClient;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var msg = _loc.GetLocalizedString("Vietnamese");
+            var culture = CultureInfo.CurrentCulture.Name;
+            /*
+            var slides = await _slideApiClient.GetAll();
+            var ViewModel = new HomeViewModel();
+            ViewModel.Slides = slides;
+            */
+            var ViewModel = new HomeViewModel
+            {
+                Slides = await _slideApiClient.GetAll(),
+                FeaturedProducts = await _productApiClient.GetFeaturedProducts(culture, SystemConstants.ProductSettings.NumberOfFeaturedProducts)
+            };
+
+            return View(ViewModel);
         }
 
         public IActionResult Privacy()
         {
-            var msg = _loc.GetLocalizedString("Vietnamese");
-
             return View();
         }
 

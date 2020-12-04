@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using eShopSolution.ApiIntegration;
 using eShopSolution.WebApp.LocalizationResources;
 using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +25,8 @@ namespace eShopSolution.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+
             // services.AddControllersWithViews();
 
             // --- Support Multiple languages ---
@@ -67,10 +67,16 @@ namespace eShopSolution.WebApp
                     };
                 });
             // --- /.Support Multiple languages ---
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                //options.Cookie.HttpOnly = true;
+                //options.Cookie.IsEssential = true;
+            });
 
-
-
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();// ca ung dung chi dung duy nhat 1 Singleton
+            services.AddTransient<ISlideApiClient, SlideApiClient>();
+            services.AddTransient<IProductApiClient, ProductApiClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +100,8 @@ namespace eShopSolution.WebApp
             app.UseAuthorization();
 
             app.UseRequestLocalization(); // Support Multiple languages
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
