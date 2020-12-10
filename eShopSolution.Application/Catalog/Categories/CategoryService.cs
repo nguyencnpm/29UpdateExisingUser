@@ -24,7 +24,8 @@ namespace eShopSolution.Application.Catalog.Categories
                         select new { c, ct };
             return await query.Select(x => new CategoryVm() { 
                 Id = x.c.Id,
-                Name = x.ct.Name
+                Name = x.ct.Name,
+                ParentId = x.c.ParentId
             }).ToListAsync();
         }
     }
