@@ -143,6 +143,8 @@ namespace eShopSolution.Application.Catalog.Products
             //1. Select join
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
+                        join pi in _context.ProductImages on p.Id equals pi.ProductId into ppi
+                        from pi in ppi.DefaultIfEmpty()
 
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId into ppic
                         from pic in ppic.DefaultIfEmpty()
@@ -151,8 +153,8 @@ namespace eShopSolution.Application.Catalog.Products
                         from c in picc.DefaultIfEmpty()
 
                             // where pt.Name.Contains(request.Keyword)
-                        where pt.LanguageId == request.LanguageId
-                        select new { p, pt, pic };
+                        where pt.LanguageId == request.LanguageId && pi.IsDefault == true
+                        select new { p, pt, pic, pi };
             //2. Filter 
             if (!string.IsNullOrEmpty(request.Keyword))
             {
@@ -182,7 +184,8 @@ namespace eShopSolution.Application.Catalog.Products
                     SeoDescription = x.pt.SeoDescription,
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount
+                    ViewCount = x.p.ViewCount,
+                    ThumbnailImage = x.pi.ImagePath
                 }).ToListAsync();
             //4. Select projection
             var pagedResult = new PagedResult<ProductVm>()
