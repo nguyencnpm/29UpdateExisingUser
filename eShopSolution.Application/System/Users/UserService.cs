@@ -39,7 +39,7 @@ namespace eShopSolution.Application.System.Users
             {
                 return new ApiErrorResult<string>("Tài khoản không tồn tại");
             }
-            var result = await _signInManager.PasswordSignInAsync(user, request.PassWord,request.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password,request.RememberMe, true);
             if (!result.Succeeded)
             {
                 return new ApiErrorResult<string>("Login is incorrect");
@@ -160,7 +160,7 @@ namespace eShopSolution.Application.System.Users
                 UserName=request.UserName,
                 PhoneNumber=request.PhoneNumber
             };
-            var result = await _userManager.CreateAsync(user, request.PassWord);
+            var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
                 return new ApiSuccessResult<bool>();

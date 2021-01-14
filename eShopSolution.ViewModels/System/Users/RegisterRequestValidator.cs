@@ -24,11 +24,11 @@ namespace eShopSolution.ViewModels.System.Users
             RuleFor(x=>x.PhoneNumber).NotEmpty().WithMessage("Phone number is required");
 
             RuleFor(x => x.UserName).NotEmpty().WithMessage("User name is required");
-            RuleFor(x => x.PassWord).NotEmpty().WithMessage("Password is required")
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required")
                 .MinimumLength(6).WithMessage("Password is at least 6 characters");
 
             RuleFor(x => x).Custom((request, context) => {
-                if (request.PassWord!=request.ConfirmPassWord)
+                if (request.Password!=request.ConfirmPassword)
                 {
                     context.AddFailure("Confirm passWord is not match");
                 }

@@ -28,10 +28,10 @@ namespace eShopSolution.ViewModels.System.Users
 
         [Display(Name = "Mật Khảu")]
         [DataType(DataType.Password)]
-        public string PassWord { get; set; }
+        public string Password { get; set; }
 
         [Display(Name = "Xác Nhận Mật Khẩu")]
         [DataType(DataType.Password)]
-        public string ConfirmPassWord { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

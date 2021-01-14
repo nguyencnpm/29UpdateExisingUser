@@ -69,5 +69,22 @@ namespace eShopSolution.ApiIntegration
             // return JsonConvert.DeserializeObject<ApiErrorResult<List<LanguageVm>>>(body);
             throw new Exception(body);
         }
+
+        protected async Task<bool> Delete(string url)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var bearerToken = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+
+            var response = await client.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
