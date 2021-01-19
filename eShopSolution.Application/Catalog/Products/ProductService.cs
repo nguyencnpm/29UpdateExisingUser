@@ -213,6 +213,8 @@ namespace eShopSolution.Application.Catalog.Products
                                     where pic.ProductId == productId && ct.LanguageId == languageId
                                     select ct.Name).ToListAsync();
 
+            var image = await _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefaultAsync();
+
             var productViewModel = new ProductVm()
             {
                 Id = product.Id,
@@ -228,7 +230,8 @@ namespace eShopSolution.Application.Catalog.Products
                 SeoTitle = productTranslations != null ? productTranslations.SeoTitle : null,
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
-                Categories = categories
+                Categories = categories,
+                ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
             };
             return productViewModel;
         }
