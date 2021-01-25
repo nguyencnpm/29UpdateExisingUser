@@ -3,6 +3,7 @@
     ViewData["Title"] = "Shopping Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{ var culture = CultureInfo.CurrentCulture.Name; }
 
 @section Scripts{
 
@@ -18,7 +19,7 @@
     <li class="active"> SHOPPING CART</li>
 </ul>
 
-<h3>  
+<h3>
     SHOPPING CART [ <small><span id="lbl-number-of-items"></span> Item(s) </small>]
     <a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a>
 </h3>
@@ -38,7 +39,6 @@
         </tr>
     </thead>
     <tbody id="cart-body">
-        
     </tbody>
 
     <tfoot>
@@ -61,5 +61,5 @@
     </tfoot>
 </table>
 
-<a href="products.html" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-<a href="login.html" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
+<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+<a href="/@culture/Cart/Checkout" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>

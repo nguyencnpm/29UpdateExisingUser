@@ -1,5 +1,6 @@
 ﻿using eShopSolution.ApiIntegration;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.Sales;
 using eShopSolution.WebApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,15 +45,15 @@ namespace eShopSolution.WebApp.Controllers
             {
                 currentCart = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
             }
-                        
+
             int quantity = 1;
-            if (currentCart.Any(x=>x.ProductId==id))
+            if (currentCart.Any(x => x.ProductId == id))
             {
                 quantity = currentCart.First(x => x.ProductId == id).Quantity + quantity;
             }
 
             var product = await _productApiClient.GetById(id, languageId);
-            
+
             var cartItem = new CartItemViewModel()
             {
                 ProductId = id,
@@ -76,11 +77,11 @@ namespace eShopSolution.WebApp.Controllers
             if (session != null)
             {
                 currentCart = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
-                foreach(var item in currentCart)
+                foreach (var item in currentCart)
                 {
-                    if(item.ProductId == id)
+                    if (item.ProductId == id)
                     {
-                        if(item.Quantity == 0)
+                        if (item.Quantity == 0)
                         {
                             currentCart.Remove(item);
                             break;
@@ -92,6 +93,56 @@ namespace eShopSolution.WebApp.Controllers
 
             HttpContext.Session.SetString(SystemConstants.CartSession, JsonConvert.SerializeObject(currentCart));
             return Ok(currentCart);
+        }
+
+        public IActionResult Checkout()
+        {
+            return View(GetCheckoutViewModel());
+        }
+        [HttpPost]
+        public IActionResult Checkout(CheckoutViewModel request)
+        {
+            var model = GetCheckoutViewModel();
+            var orderDetails = new List<OrderDetailVm>();
+            foreach (var item in model.CartItems)
+            {
+                orderDetails.Add(new OrderDetailVm() { 
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity
+                });
+            }
+
+            var checkoutRequest = new CheckoutRequest()
+            {
+                Address = request.CheckoutModel.Address,
+                Name = request.CheckoutModel.Name,
+                Email = request.CheckoutModel.Email,
+                PhoneNumber = request.CheckoutModel.PhoneNumber,
+                OrderDetail = orderDetails
+            };
+            // Gia su add api thanh cong
+            // --- add to Api --- 
+            TempData["SuccessMsg"] = "Order puschased successfull";
+
+            return View(model);
+        }
+
+        private CheckoutViewModel GetCheckoutViewModel()
+        {
+            var session = HttpContext.Session.GetString(SystemConstants.CartSession);
+            List<CartItemViewModel> currentCart = new List<CartItemViewModel>();
+            if (session != null)
+            {
+                currentCart = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
+            }
+
+            var checkoutVm = new CheckoutViewModel()
+            {
+                CartItems = currentCart,
+                CheckoutModel = new CheckoutRequest()
+            };
+
+            return checkoutVm;
         }
     }
 }
